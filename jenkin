@@ -29,7 +29,14 @@ pipeline {
             }
 
         }
-        stage('Deliver') {
+
+        stage('Approval') {
+            steps {
+                input 'Approve Deployment to Production'
+            }
+        }
+
+        stage('Deployment') {
             steps {
                 echo 'Deploy on Ec-2'
             }
