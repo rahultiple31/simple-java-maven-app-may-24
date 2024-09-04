@@ -30,6 +30,12 @@ pipeline {
 
         }
 
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t java .'
+            }
+        }
+
         stage('Approval') {
             steps {
                 input 'Approve Deployment to Production'
