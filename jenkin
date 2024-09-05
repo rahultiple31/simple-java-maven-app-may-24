@@ -36,6 +36,14 @@ pipeline {
             }
         }
 
+        stage('DockerHub login & Image push to dockerhub') {
+            steps {
+                withCredentials([string(credentialsId: 'Docker-Hub', variable: 'Docker-Hub')]) {
+                sh 'docker login -u rahultipledocker -p ${Docker-Hub}'
+                }
+            }
+        }
+
         stage('Approval') {
             steps {
                 input 'Approve Deployment to Production'
@@ -44,7 +52,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                echo 'Deploy on Ec-2'
+                echo 'dockerhub pull & deploy docker-compose/docker-conatiner'
             }
         }
     }
