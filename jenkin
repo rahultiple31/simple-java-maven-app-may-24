@@ -5,6 +5,10 @@ pipeline {
         maven "mvn"
     }
 
+    environment{
+        DOCKER_USER='rahultipledocker'
+    }
+
     stages {
         stage('Git Checkout') {
             steps {
@@ -32,8 +36,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // sh 'docker rmi rahultipledocker/may:latest'
-                // sh 'docker rmi java:latest'
+                sh 'docker rmi rahultipledocker/may:latest'
+                sh 'docker rmi java'
                 sh 'docker build -t java .'
             }
         }
@@ -41,7 +45,7 @@ pipeline {
         stage('DockerHub login & Image push to dockerhub') {
             steps {
                 withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
-                sh 'docker login -u rahultipledocker -p ${docker_hub}'
+                sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
                 sh 'docker tag java rahultipledocker/may:latest'
                 sh 'docker push rahultipledocker/may:latest'
                 sh 'docker logout'
