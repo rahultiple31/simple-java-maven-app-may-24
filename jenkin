@@ -38,8 +38,8 @@ pipeline {
 
         stage('DockerHub login & Image push to dockerhub') {
             steps {
-                withCredentials([string(credentialsId: 'Docker-Hub', variable: 'Docker-Hub')]) {
-                sh 'docker login -u rahultipledocker -p ${Docker-Hub}'
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
+                sh 'docker login -u rahultipledocker -p ${docker_hub}'
                 }
             }
         }
