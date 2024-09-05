@@ -40,6 +40,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
                 sh 'docker login -u rahultipledocker -p ${docker_hub}'
+                sh 'docker push java'
                 }
             }
         }
