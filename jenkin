@@ -32,8 +32,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker rmi rahultipledocker/may:latest'
-                sh 'docker rmi java:latest'
+                // sh 'docker rmi rahultipledocker/may:latest'
+                // sh 'docker rmi java:latest'
                 sh 'docker build -t java .'
             }
         }
