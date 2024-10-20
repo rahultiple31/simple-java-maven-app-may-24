@@ -22,10 +22,10 @@ pipeline {
                 }
             }
         }
-        // stage('Deliver') {
-        //     steps {
-        //         sh './jenkins/scripts/deliver.sh'
-        //     }
-        // }
+        stage('Deployment') {
+            steps {
+                sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
+            }
+        }
     }
 }
