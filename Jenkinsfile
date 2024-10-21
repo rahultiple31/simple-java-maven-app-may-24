@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         NAME="Rahul"
+        PASS=credentials('PASS')
     }
 
     
@@ -16,6 +17,7 @@ pipeline {
             steps {
                 sh '''
                     echo $NAME
+                    echo $PASS
                     mvn clean package
                 '''
 
