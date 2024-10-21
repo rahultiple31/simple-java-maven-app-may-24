@@ -43,7 +43,9 @@ pipeline {
         }
 
         stage('Approval') {
-            input 'Approval Deployment to Production'
+            steps {
+                input 'Approval Deployment to Production'
+            }
         }
 
 
