@@ -21,12 +21,11 @@ pipeline {
 
                 retry(3){
                     sh "df -h"
-                    sh "sleep 20"
                 }
 
-                // timeout(){
-                //     sh "sleep 20"
-                // }
+                timeout(time:5, unit:'SECONDS'){
+                    sh "sleep 20"
+                }
 
             }
         }
