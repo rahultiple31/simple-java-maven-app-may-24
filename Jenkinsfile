@@ -13,6 +13,13 @@ pipeline {
 
     
     stages {
+
+        stage('Git checkout code') {
+            steps {
+                git 'https://github.com/rahultiple31/simple-java-maven-app-may-24.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh '''
