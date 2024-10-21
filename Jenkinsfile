@@ -20,8 +20,13 @@ pipeline {
                 '''
 
                 retry(3){
-                    sh "df -0"
+                    sh "df -h"
+                    sh "sleep 20"
                 }
+
+                // timeout(){
+                //     sh "sleep 20"
+                // }
 
             }
         }
