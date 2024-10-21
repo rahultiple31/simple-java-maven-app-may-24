@@ -20,7 +20,7 @@ pipeline {
                 '''
 
                 retry(3){
-                    sh "df -h"
+                    sh "df -0"
                 }
 
             }
