@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Deployment') {
             steps {
-                sh 'java -jar /var/lib/jenkins/workspace/Project-1/target*.jar'
+                sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
             }
         }
     }
