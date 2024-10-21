@@ -25,9 +25,9 @@ pipeline {
                     sh "df -h"
                 }
 
-                timeout(time:5, unit:'SECONDS'){
-                    sh "sleep 20"
-                }
+                // timeout(time:5, unit:'SECONDS'){
+                //     sh "sleep 20"
+                // }
 
             }
         }
@@ -41,6 +41,12 @@ pipeline {
                 }
             }
         }
+
+        stage('Approval') {
+            input 'Approval Deployment to Production'
+        }
+
+
         stage('Deployment') {
             steps {
                 sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
