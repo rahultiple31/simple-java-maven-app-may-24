@@ -18,6 +18,11 @@ pipeline {
                     echo $NAME
                     mvn clean package
                 '''
+
+                retry(3){
+                    sh "df -h"
+                }
+
             }
         }
         stage('Test') {
