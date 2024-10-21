@@ -15,8 +15,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
+                    echo $NAME
                     mvn clean package
-                    echo $Rahul
                 '''
             }
         }
