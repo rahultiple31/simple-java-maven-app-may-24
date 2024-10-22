@@ -52,8 +52,15 @@ pipeline {
         stage('Build docker image') {
             steps {
                 sh '''
-                    docker rmi java
-                    docker build -t java .
+                    docker build -t rahultipledocker/java_pro .
+                '''
+            }
+        }
+
+        stage('push docker image to dockerhub repo') {
+            steps {
+                sh '''
+                    docker push rahultipledocker/java_pro
                 '''
             }
         }
