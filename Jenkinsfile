@@ -52,6 +52,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 sh '''
+                    docker rmi java
                     docker build -t java .
                 '''
             }
