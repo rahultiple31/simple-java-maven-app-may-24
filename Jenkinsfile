@@ -61,8 +61,8 @@ pipeline {
         stage('push docker image to dockerhub repo') {
             steps {
 
-                withCredentials([gitUsernamePassword(credentialsId: 'DockerHub', gitToolName: 'Default')]) {    
-                sh 'docker login -u ${DOCKER_USER} -p ${Default}'
+                withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_hub')]) { 
+                sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
                 sh 'docker push rahultipledocker/java_pro:latest'
                 sh 'docker logout'
                 }   
