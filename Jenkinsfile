@@ -81,6 +81,7 @@ pipeline {
             steps {
             //    sh "ssh -i java.pem ubuntu@192.168.10.1"
             //    sh docker --version
+                sh 'docker rm -f java'
                 sh 'docker run -itd --name java rahultipledocker/java_pro:latest'
             }
         }
