@@ -9,6 +9,7 @@ pipeline {
     environment {
         NAME="Rahul"
         PASS=credentials('PASS')
+        DOCKER_USER="rahultipledocker"
     }
 
     
@@ -59,9 +60,12 @@ pipeline {
 
         stage('push docker image to dockerhub repo') {
             steps {
-                sh '''
-                    docker push rahultipledocker/java_pro
-                '''
+
+                withCredentials([gitUsernamePassword(credentialsId: 'DockerHub', gitToolName: 'Default')]) {    
+                sh 'docker login -u ${DOCKER_USER} -p ${DockerHub}'
+                sh 'docker push rahultipledocker/java_pro:latest'
+                sh 'docker logout'
+                }   
             }
         }
 
