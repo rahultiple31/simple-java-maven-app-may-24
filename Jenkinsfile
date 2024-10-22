@@ -49,11 +49,19 @@ pipeline {
             }
         }
 
-        stage('Approval') {
+        stage('Build docker image') {
             steps {
-                input 'Approval Deployment to Production'
+                sh '''
+                    docker build -t java .
+                '''
             }
         }
+
+        // stage('Approval') {
+        //     steps {
+        //         input 'Approval Deployment to Production'
+        //     }
+        // }
 
 
         stage('Deployment') {
