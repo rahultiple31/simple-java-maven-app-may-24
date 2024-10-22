@@ -53,7 +53,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 sh '''
-                    docker rmi rahultipledocker/java_pro
+                    docker rmi -f rahultipledocker/java_pro
                     docker build -t rahultipledocker/java_pro .
                 '''
             }
