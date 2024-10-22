@@ -62,7 +62,7 @@ pipeline {
             steps {
 
                 withCredentials([gitUsernamePassword(credentialsId: 'DockerHub', gitToolName: 'Default')]) {    
-                sh 'docker login -u ${DOCKER_USER} -p ${DockerHub}'
+                sh 'docker login -u ${DOCKER_USER} -p ${Default}'
                 sh 'docker push rahultipledocker/java_pro:latest'
                 sh 'docker logout'
                 }   
