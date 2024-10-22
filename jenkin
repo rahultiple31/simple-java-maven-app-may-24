@@ -1,83 +1,82 @@
 pipeline {
+
     agent any
 
-    tools{
+    tools {
         maven "mvn"
     }
 
-    environment{
-        DOCKER_USER='rahultipledocker'
+    environment {
+        NAME="Rahul"
+        PASS=credentials('PASS')
     }
 
+    
     stages {
-        stage('Git Checkout') {
+
+        stage('Git checkout code') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHub', url: 'https://github.com/rahultiple31/simple-java-maven-app-may-24.git']])
+                git 'https://github.com/rahultiple31/simple-java-maven-app-may-24.git'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                sh '''
+                    echo $NAME
+                    echo $PASS
+                    mvn clean package
+                '''
+
+                retry(3){
+                    sh "df -h"
+                }
+
+                // timeout(time:5, unit:'SECONDS'){
+                //     sh "sleep 20"
+                // }
+
             }
         }
         stage('Test') {
             steps {
                 sh 'mvn test'
             }
-
-            post { 
-                always { 
-                    junit '**/target/surefire-reports/TEST-com.mycompany.app.AppTest.xml'
-                }
-            }
-
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker rmi rahultipledocker/may:latest'
-                sh 'docker rmi java'
-                sh 'docker build -t java .'
-            }
-        }
-
-        stage('DockerHub login & Image push to dockerhub') {
-            steps {
-                withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
-                sh 'docker login -u ${DOCKER_USER} -p ${docker_hub}'
-                sh 'docker tag java rahultipledocker/may:latest'
-                sh 'docker push rahultipledocker/may:latest'
-                sh 'docker logout'
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
 
-        stage('Approval') {
+        stage('Build docker image') {
             steps {
-                input 'Approve Deployment to Production'
+                sh '''
+                    // docker rmi java
+                    docker build -t rahultipledocker/java_pro .
+                '''
             }
         }
+
+        stage('push docker image to dockerhub repo') {
+            steps {
+                sh '''
+                    docker push rahultipledocker/java_pro
+                '''
+            }
+        }
+
+        // stage('Approval') {
+        //     steps {
+        //         input 'Approval Deployment to Production'
+        //     }
+        // }
+
 
         stage('Deployment') {
             steps {
-                // withCredentials([string(credentialsId: 'docker-hub', variable: 'docker_hub')]) {
-                // sh 'docker login -u rahultipledocker -p ${docker_hub}'
-                sh 'docker run -itd --name java rahultipledocker/may:latest /bin/bash'
-                // sh 'docker logout'
+                sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
             }
         }
     }
-
-    post { 
-        failure { 
-            echo 'Failuer!'
-            mail bcc: '', body: '${env.JOB_URL}', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER}"', to: 'rahultiple1@gmail.com'
-        }
-        success { 
-            echo 'success!'
-            archiveArtifacts artifacts: '**/target/*.jar', onlyIfSuccessful: true
-        }
-    }
-
 }
