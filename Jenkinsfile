@@ -53,6 +53,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 sh '''
+                    docker rmi rahultipledocker/java_pro
                     docker build -t rahultipledocker/java_pro .
                 '''
             }
@@ -69,17 +70,25 @@ pipeline {
             }
         }
 
-        // stage('Approval') {
-        //     steps {
-        //         input 'Approval Deployment to Production'
-        //     }
-        // }
-
-
-        stage('Deployment') {
+        stage('Approval') {
             steps {
-                sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
+                input 'Approval Deployment to Production'
             }
         }
+
+
+        stage('Deployment on docker container') {
+            steps {
+            //    sh "ssh -i java.pem ubuntu@192.168.10.1"
+            //    sh docker --version
+                sh 'docker run -itd --name java_app rahultipledocker/java_pro /bin/bash'
+            }
+        }
+
+        // stage('Deployment') {
+        //     steps {
+        //         sh 'java -jar /var/lib/jenkins/workspace/Project-1/target/*.jar'
+        //     }
+        // }
     }
 }
