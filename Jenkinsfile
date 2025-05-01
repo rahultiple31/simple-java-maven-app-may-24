@@ -53,14 +53,23 @@ pipeline{
             }
         }
 
-        stage("deloyment"){
+        stage("docker push"){
             steps{
                  sh '''
-                 docker rm -f bash_container
-                 docker run -itd --name bash_container app /bin/bash
+                 docker tag app rahultipledocker/nov-aap:latest
+                 docker push rahultipledocker/nov-aap:latest
                  '''
             }
         }
+
+        // stage("deloyment"){
+        //     steps{
+        //          sh '''
+        //          docker rm -f bash_container
+        //          docker run -itd --name bash_container app /bin/bash
+        //          '''
+        //     }
+        // }
 
 
     }
